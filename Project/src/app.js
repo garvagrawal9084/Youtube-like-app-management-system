@@ -53,4 +53,14 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 // Exporting the Express app instance to be used in the main server file
+
+
+
+// Routes import
+import userRouter from "./routes/user.routes.js"
+
+// Routes declaration
+app.use("/api/v1/users" , userRouter)
+// http://localhost:8000/api/v1/users/register
+
 export { app }

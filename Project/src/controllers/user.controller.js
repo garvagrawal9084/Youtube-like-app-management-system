@@ -16,7 +16,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // return response
 
   const { fullname, email, username, password } = req.body;
-  console.log("req body", req.body);
+  // console.log("req body", req.body);
 
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
@@ -28,30 +28,39 @@ const registerUser = asyncHandler(async (req, res) => {
     $or: [{ username }, { email }],
   });
 
-  console.log("existed User :- ", existedUser);
+  // console.log("existed User :- ", existedUser);
 
   if (existedUser) {
     throw new APIError(409, "User already exist");
   }
 
-  console.log("req.files:- ", req.files);
+  // console.log("req.files:- ", req.files);
 
   const avatarLocalPath = req.files?.avatar[0]?.path;
 
-  console.log("req.files?.avatar :- ", req.files?.avatar);
-  console.log("req.files?.avatar[0] :- ", req.files?.avatar[0]);
+  // console.log("req.files?.avatar :- ", req.files?.avatar);
+  // console.log("req.files?.avatar[0] :- ", req.files?.avatar[0]);
 
-  console.log("avatar local path :- ", avatarLocalPath);
+  // console.log("avatar local path :- ", avatarLocalPath);
+  
+  // console.log(req.files?.coverImage?.[0]?.path || "")
 
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
-
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path || "";
+  
+  // console.log("coverImage local path :- ", coverImageLocalPath)
   if (!avatarLocalPath) {
     return new APIError(400, "Avatar file is required");
   }
 
   const avatarURL = await uploadOnCloudinary(avatarLocalPath);
 
-  const coverImageURL = await uploadOnCloudinary(coverImageLocalPath);
+  // console.log("Avatar URL " , avatarURL)
+
+  let coverImageURL
+
+  if(coverImageLocalPath !== ""){
+     coverImageURL = await uploadOnCloudinary(coverImageLocalPath);
+  }
 
   if (!avatarURL) {
     throw new APIError(400, "Avatar file is required");

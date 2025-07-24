@@ -394,9 +394,9 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
   // Todo
-  // Get avatar localStorage
-  // Update the avatar with cloudinary avatar
-  // Get new avatar url
+  // Get coverImage localStorage
+  // Update the coverImage with cloudinary avatar
+  // Get new coverImage url
   // Update it in the database
 
   // Get avatar local path from req.file(multer)

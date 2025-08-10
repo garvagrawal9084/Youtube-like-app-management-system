@@ -30,10 +30,10 @@ router.route("/logout").post(verifyJWT , logoutUser)
 router.route("/refreshAccessToken").post(refreshAccessToken)
 
 // Change password
-router.route("/changePassword").post(verifyJWT , changeCurrectPassword)
+router.route("/change-password").post(verifyJWT , changeCurrectPassword)
 
 // get current user info 
-router.route("/getUserInfo").post(verifyJWT , getCurrentUserInfo)
+router.route("/get-user-info").get(verifyJWT , getCurrentUserInfo)
 
 // update Account Detail
 router.route("/update-account-detail").patch(verifyJWT , updateAccountDetails)

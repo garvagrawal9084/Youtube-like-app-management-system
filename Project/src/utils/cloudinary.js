@@ -35,22 +35,47 @@ const uploadOnCloudinary = async function (localFilePath) {
   }
 };
 
-const destroyOnCloudinary = async function(url){
+
+
+const destroyImageOnCloudinary = async function(url){
   try {
-    if(!url){
-      return
-    }
+    if(!url) return 
 
-    const response = await cloudinary.uploader.destroy(url , {
-      resource_type : "auto" ,
-    })
+    const part = url.split("/")
+    const fileNameWithExtension = part[part.length -1]
+    const publicId = fileNameWithExtension.split(".")[0]
 
-    console.log("File Deleted On Cloudinary " , response)
-    return response
+     const response = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image", // since it's a image
+    });
+
+    console.log("File Deleted On Cloudinary", response);
+    return response;
   } catch (error) {
-    return null 
+    console.error("Error deleting from Cloudinary:", error);
+    return null;
+  }
+}
+const destroyVideoOnCloudinary = async function(url){
+  try {
+    if(!url) return 
+
+    const part = url.split("/")
+    const fileNameWithExtension = part[part.length -1]
+    const publicId = fileNameWithExtension.split(".")[0]
+
+     const response = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "video", // since it's a image
+    });
+
+    console.log("File Deleted On Cloudinary", response);
+    return response;
+  } catch (error) {
+    console.error("Error deleting from Cloudinary:", error);
+    return null;
   }
 }
 
+
 // Exporting the upload function for use in other files/modules
-export { uploadOnCloudinary , destroyOnCloudinary };
+export { uploadOnCloudinary  , destroyImageOnCloudinary ,destroyVideoOnCloudinary };

@@ -2,7 +2,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { APIError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
 import {
-  destroyOnCloudinary,
+  destroyImageOnCloudinary,
+ 
   uploadOnCloudinary,
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -381,7 +382,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   // Delete the file from cloudinary
 
   if(user.avatar){
-     await destroyOnCloudinary(user.avatar);
+     await destroyImageOnCloudinary(user.avatar);
   }
 
   // update the old url with new url in database
@@ -426,7 +427,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
   // Delete the file from cloudinary
 
   if(user.coverImage){
-     await destroyOnCloudinary(user.coverImage);
+     await destroyImageOnCloudinary(user.coverImage);
   }
 
   user.coverImage = coverImage.url

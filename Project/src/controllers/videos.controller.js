@@ -106,6 +106,10 @@ const getVideoById = asyncHandler(async (req, res) => {
     throw new APIError(200, "Video not found");
   }
 
+  if(!video.isPublished){
+    throw new APIError(200 , "Video is not published for public")
+  }
+
   // 3)
   const userId = req.user?._id;
 
@@ -230,32 +234,61 @@ const deleteVideo = asyncHandler(async(req , res)=> {
   if(!videoId){
     throw new APIError(400 , "Invalid URL")
   }
-
+// 2)
   const video = await Video.findById(videoId)
 
   if(!video){
     throw new APIError(400 , "Video not found")
   }
 
-  console.log("Video file deleted " , video.videoFile)
+  // 3)
 
   if(video.videoFile){
     await destroyVideoOnCloudinary(video.videoFile)
   }
 
-    console.log("Video thumbnail deleted " , video.thumbnail)
   
   if(video.thumbnail){
     await destroyImageOnCloudinary((video.thumbnail))
   }
 
-
-
   const deleteVideo = await Video.deleteOne({_id : videoId})
+
+// 4)
 
   return res.status(200).json(new ApiResponse(200 , deleteVideo , "Video Deleted Successfully"))
 
 })
 
+const togglePublishStatus = asyncHandler(async (req , res) => {
+  // todo
+  // 1) Get videoId from Params
+  // 2) Find the video by videoID
+  // 3) Update publish status
+  // 4) Send response
 
-export { publishVideo, getVideoById  , updateVideo , deleteVideo};
+  // 1)
+  const {videoId} = req.params
+  
+  if(!videoId){
+    throw new APIError(400, "Params not provided")
+  }
+
+  // 2)
+
+  const video = await Video.findById(videoId)
+
+  if(!video){
+    throw new APIError(404 , "Video not found")
+  }
+
+  // 3)
+
+  video.isPublished = !video.isPublished
+  const response = await video.save()
+
+  return res.status(200).json(new ApiResponse(200 , {isPublished : response.isPublished }, "Publish Toggle Successfully"))
+})
+
+
+export { publishVideo, getVideoById  , updateVideo , deleteVideo , togglePublishStatus};

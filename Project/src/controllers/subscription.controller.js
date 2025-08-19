@@ -117,4 +117,25 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     );
 });
 
+const getSubscribedChannel = asyncHandler(async (req , res) => {
+    const {subscribedId} = req.params
+
+    if(!(mongoose.Types.ObjectId.isValid(subscribedId))){
+        throw new APIError(400 , "Invalid subscribed id")
+    }
+
+    const subscribedList = await Subscriptions.aggregate([
+        {
+            $match : mongoose.Types.ObjectId(subscribedId)
+        },
+        {
+            $lookup : {
+                from : "users" ,
+                localField : "subscribers",
+                fore
+            }
+        }
+    ])
+})
+
 export { toggleSubscription, getUserChannelSubscribers };

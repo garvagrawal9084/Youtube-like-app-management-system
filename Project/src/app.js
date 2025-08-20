@@ -62,6 +62,7 @@ import videoRouter from "./routes/video.routes.js"
 import commentRouter from "./routes/comment.routes.js"
 import { likeRouter } from "./routes/like.routes.js"
 import { subscriberRouter } from "./routes/subscription.routes.js"
+import { playlistRouter } from "./routes/playlist.routes.js"
 
 // Routes declaration
 app.use("/api/v1/users" , userRouter)
@@ -69,6 +70,7 @@ app.use("/api/v1/videos" , videoRouter)
 app.use("/api/v1/comment" , commentRouter )
 app.use("/api/v1/like" , likeRouter )
 app.use("/api/v1/subscribe" , subscriberRouter)
+app.use("api/v1/playlit" , playlistRouter)
 // http://localhost:8000/api/v1/users/register
 
 export { app }
